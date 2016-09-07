@@ -3,45 +3,31 @@ import ReactDOM from 'react-dom'
 class App extends React.Component {
     constructor(){
         super();
-        this.state = { val: 0 };
         this.update = this.update.bind(this);
+        this.state = {increasing: false}
     }
     update(){
         this.setState({val: this.state.val + 1})
+    };
+    componentWillRecieveProps(nextProps){
+        this.setState({increasing: nextProps.val > this.props.val})
     }
-    componentWillMount(){
-        console.log('mounting')
-    }
-    render(){
-        console.log('rendering')
-        return <button onClick={this.update}>{this.state.val}</button>
-    }
-    componentDidMount(){
-        console.log('mounted')
-    }
-    componentWillUnmount(){
-        console.log('bye!')
-    }
-}
-
-class Wrapper extends React.Component {
-    mount(){
-        ReactDOM.render(<App />, document.getElementById('a'))
-    }
-    unmount(){
-        ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+    shouldComponentUpdate(nextProps, nextStage) {
+        return nextProps.cal % 5 === 0;
     }
     render(){
-        return(
-            <div>
-                <button onClick={this.mount.bind(this)}>Mount</button>
-                <button onClick={this.mount.bind(this)}>Unmount</button>
-                <div id="a"></div>
-            </div>
+        console.log(this.state.incrising)
+        return (
+            <button onClick={this.update}>
+                {this.props.val}
+            </button>
         )
     }
+    componentDidUpdate(prevProps, prevState) {
+        console.log('prevProps', prevProps)
+    }
 }
 
-const Heart = () => <span className="glyphicon glyphicon-heart"></span>
+App.defaultProps = { val: 0 }
 
 export default App
