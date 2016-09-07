@@ -1,14 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 class App extends React.Component {
+    constructor(){
+        super();
+        this.state = { val: 0 };
+        this.update = this.update.bind(this);
+    }
+    update(){
+        this.setState({val: this.state.val + 1})
+    }
+    componentWillMount(){
+        console.log('mounting')
+    }
     render(){
-        return <Button> <Heart/> React</Button>
+        console.log('rendering')
+        return <button onClick={this.update}>{this.state.val}</button>
+    }
+    componentDidMount(){
+        console.log('mounted')
+    }
+    componentWillUnmount(){
+        console.log('bye!')
     }
 }
 
-class Button extends React.Component {
+class Wrapper extends React.Component {
+    mount(){
+        ReactDOM.render(<App />, document.getElementById('a'))
+    }
+    unmount(){
+        ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+    }
     render(){
-        return <button>{this.props.children}</button>
+        return(
+            <div>
+                <button onClick={this.mount.bind(this)}>Mount</button>
+                <button onClick={this.mount.bind(this)}>Unmount</button>
+                <div id="a"></div>
+            </div>
+        )
     }
 }
 
